@@ -1,0 +1,1 @@
+RUSSIAN_URL = 'https://scanner.tradingview.com/russia/scan'
