@@ -1,2 +1,5 @@
 /.idea/*
 /tinkoff/tokens.py
+/tinkoff/__pycache__
+/library/__pycache__
+/__pycache__
