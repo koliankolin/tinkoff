@@ -1,11 +1,10 @@
-import requests
-from library.request_jsons import get_json_all
-from library.urls import RUSSIAN_URL
-import json
-
+import tinkoff.portfolio as portfolio
+from library.utils import find_stocks_to_buy
+import random
 
 def main():
-
+    print(portfolio.sell_positions_to_sell())
+    # portfolio.compact_portfolio()
 
 
 if __name__ == '__main__':

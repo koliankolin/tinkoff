@@ -1,4 +1,4 @@
-def get_json_all(time=None, limit=10):
+def get_json_all(time=None, limit=1000):
     return '''
     {"filter":
         [{"left":"close",

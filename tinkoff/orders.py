@@ -1,13 +1,12 @@
 from tinkoff.urls import API_URL
 import requests
 import json
-from tinkoff.constants import BROCKER_ACC, SELL, BUY, OK
-from tinkoff.portfolio import get_positions
-
+from tinkoff.constants import SELL, BUY, OK
+from tinkoff.tokens import BROCKER_ACC, HEADER_AUTH
 
 class Order:
-    def __init__(self, ticker):
-        self.position = get_positions()[ticker]
+    def __init__(self, position):
+        self.position = list(position.values())[0]
 
     def sell_by_market(self):
         return self._check_res(self._make_request_marker(SELL))
@@ -26,14 +25,16 @@ class Order:
             return
         return requests.post(API_URL + '/orders/market-order',
                              data={'lots': self.position['lots'], 'operation': type_},
-                             params={'figi': self.position['figi'], 'brokerAccountId': BROCKER_ACC})
+                             params={'figi': self.position['figi'], 'brokerAccountId': BROCKER_ACC},
+                             headers={'Authorization': HEADER_AUTH})
 
     def _make_request_limit(self, type_, price):
         if type_ not in (BUY, SELL):
             return
-        return requests.post(API_URL + '/orders/market-order',
+        return requests.post(API_URL + '/orders/limit-order',
                              data={'lots': self.position['lots'], 'operation': type_, 'price': price},
-                             params={'figi': self.position['figi'], 'brokerAccountId': BROCKER_ACC})
+                             params={'figi': self.position['figi'], 'brokerAccountId': BROCKER_ACC},
+                             headers={'Authorization': HEADER_AUTH})
 
     @staticmethod
     def _check_res(res):
