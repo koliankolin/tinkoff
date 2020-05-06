@@ -1,14 +1,14 @@
 from library.urls import RUSSIAN_URL
 import requests
-from library.request_jsons import get_json_by_symbol, get_json_all
+from library.request_jsons import get_json_by_ticker, get_json_all
 import json
 from constants import THRESHOLD_RATING_BUY, PERCENT_PROVE, THRESHOLD_RATING_SELL
 
 def get_data_by_ticker(ticker):
-    return json.loads(requests.api.post(RUSSIAN_URL, get_json_by_symbol(ticker)).text)['data']['d']
+    return json.loads(requests.api.post(RUSSIAN_URL, get_json_by_ticker(ticker)).text)['data'][0]['d']
 
 def find_stocks_to_buy() -> list:
-    res = requests.api.post(RUSSIAN_URL, get_json_all(limit=100))
+    res = requests.api.post(RUSSIAN_URL, get_json_all(up=0, limit=1000))
     stocks = json.loads(res.text)['data']
     stocks_to_buy = []
     for stock in stocks:

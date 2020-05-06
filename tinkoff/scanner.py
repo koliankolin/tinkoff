@@ -21,4 +21,7 @@ class Scanner:
                            params={'ticker': self.ticker},
                            headers={'Authorization': HEADER_AUTH})
         instruments = json.loads(res.text)['payload']['instruments']
-        return instruments[0]['figi'] if len(instruments) != 0 else None
+        instrument = instruments[0] if len(instruments) != 0 else None
+        if not instrument or instrument['currency'] != 'RUB':
+            return None
+        return instrument['figi']

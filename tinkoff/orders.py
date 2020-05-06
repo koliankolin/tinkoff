@@ -12,7 +12,7 @@ class Order:
         return self._check_res(self._make_request_marker(SELL))
 
     def buy_by_market(self):
-        return self._check_res(self._make_request_marker(BUY))
+        return self._make_request_marker(BUY)
 
     def sell_by_limit(self, price):
         return self._check_res(self._make_request_limit(SELL, price))
@@ -24,7 +24,7 @@ class Order:
         if type_ not in (BUY, SELL):
             return
         return requests.post(API_URL + '/orders/market-order',
-                             data={'lots': self.position['lots'], 'operation': type_},
+                             data=json.dumps({'lots': self.position['lots'], 'operation': type_}),
                              params={'figi': self.position['figi'], 'brokerAccountId': BROCKER_ACC},
                              headers={'Authorization': HEADER_AUTH})
 
@@ -32,7 +32,7 @@ class Order:
         if type_ not in (BUY, SELL):
             return
         return requests.post(API_URL + '/orders/limit-order',
-                             data={'lots': self.position['lots'], 'operation': type_, 'price': price},
+                             data=json.dumps({'lots': self.position['lots'], 'operation': type_, 'price': price}),
                              params={'figi': self.position['figi'], 'brokerAccountId': BROCKER_ACC},
                              headers={'Authorization': HEADER_AUTH})
 

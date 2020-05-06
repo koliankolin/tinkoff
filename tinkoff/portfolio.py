@@ -55,6 +55,7 @@ def get_balance_in_rub():
 
 def compact_portfolio():
     balance = get_balance_in_rub()
+    print(f'Balance is: {balance}')
     if balance < 1000:
         return False
     stocks = find_stocks_to_buy()
@@ -65,18 +66,21 @@ def compact_portfolio():
         price = scanner.get_price()
         if price:
             price *= 1.02
+            lots_to_buy = int(share // price)
+            if not lots_to_buy:
+                continue
         else:
             continue
-        lots_to_buy = int(share // price)
         position = {ticker: {'figi': scanner.get_figi_by_ticker(), 'lots': lots_to_buy}}
+        print(f'Position to buy {position} by price {price}')
         order = Order(position)
         buy_by_market = order.buy_by_market()
         if not buy_by_market:
             buy_by_limit = order.buy_by_limit(price)
             if buy_by_limit:
-                print(f'Stock {ticker} was bought by LIMIT by {price}')
+                print(f'{lots_to_buy} stocks {ticker} was bought by LIMIT by {price}')
         else:
-            print(f'Stock {ticker} was bought by MARKET')
+            print(f'{lots_to_buy} stocks {ticker} was bought by MARKET')
 
 def _get_ticker_from_position(position):
     return list(position.keys())[0]

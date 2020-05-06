@@ -1,4 +1,4 @@
 PRODUCTION = False
-SELL = 'sell'
-BUY = 'buy'
+SELL = 'Sell'
+BUY = 'Buy'
 OK = 'Ok'
